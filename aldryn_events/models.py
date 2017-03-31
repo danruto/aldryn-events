@@ -37,6 +37,9 @@ from parler.models import TranslatableModel, TranslatedFields
 from sortedm2m.fields import SortedManyToManyField
 from reversion.revisions import default_revision_manager, RegistrationError
 
+from aldryn_categories.fields import CategoryManyToManyField
+from aldryn_categories.models import Category
+
 from .cms_appconfig import EventsConfig
 from .conf import settings
 from .managers import EventManager
@@ -148,6 +151,12 @@ class Event(TranslatedAutoSlugifyMixin,
     )
     description = PlaceholderField(
         'aldryn_events_event_description', verbose_name=_('description')
+    )
+    categories = CategoryManyToManyField('aldryn_categories.Category',
+                                         verbose_name=_('categories'),
+                                         blank=True)
+    hide_date = models.BooleanField(
+        _('hide the date when displaying this event'), default=False
     )
 
     translations = TranslatedFields(
